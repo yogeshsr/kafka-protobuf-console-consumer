@@ -1,6 +1,6 @@
 
 ## About
-kafka-protobuf-console-consumer reads protobuf encoded messages from kafka topic and prints its decoded JSON to console.
+kafka-protobuf-console-consumer reads protobuf encoded messages from a kafka topic and prints its decoded JSON to console.
 
 ## Installation
 For other than OS X, please clone the repo and follow Build from source section
