@@ -5,7 +5,7 @@ kafka-protobuf-console-consumer reads protobuf encoded messages from kafka topic
 ## Installation
 For OS X download the compiled executable [kafka-protobuf-console-consumer](./kafka-protobuf-console-consumer)  
 
-For other OS, please clone the repo and Build from source section
+For other OS, please clone the repo and follow Build from source section
 ## Usage
 ```
 kafka-protobuf-console-consumer --help
