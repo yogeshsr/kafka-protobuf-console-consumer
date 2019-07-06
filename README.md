@@ -3,9 +3,14 @@
 kafka-protobuf-console-consumer reads protobuf encoded messages from kafka topic and prints its decoded JSON to console.
 
 ## Installation
-For OS X download the compiled executable [kafka-protobuf-console-consumer](./kafka-protobuf-console-consumer)  
+For other than OS X, please clone the repo and follow Build from source section
 
-For other OS, please clone the repo and follow Build from source section
+For OS X
+```
+brew tap yogeshsr/homebrew-tap
+brew install kafka-protobuf-console-consumer
+```  
+
 ## Usage
 ```
 kafka-protobuf-console-consumer --help
