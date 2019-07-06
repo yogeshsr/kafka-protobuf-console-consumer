@@ -1,0 +1,7 @@
+package: github.com/yogeshsr/kafka-protobuf-console-consumer
+import:
+- package: github.com/Shopify/sarama
+  version: ^1.22.1
+- package: gopkg.in/alecthomas/kingpin.v2
+  version: ^2.2.4
+- package: github.com/jhump/protoreflect

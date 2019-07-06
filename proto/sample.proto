@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package sample_package;
+
+message SampleMessage {
+    string string_field  = 1;
+    int32 integer_field = 2;
+}
