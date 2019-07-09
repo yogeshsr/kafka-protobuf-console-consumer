@@ -21,9 +21,9 @@ Flags:
   -b, --broker-list=localhost:9092 ...
                                  List of brokers to connect
   -t, --topic=TOPIC              Topic name
-      --proto-dir=PROTO-DIR ...  foo/dir1 bar/dir2
-      --file=FILE                Proto file name
-      --message=MESSAGE          Proto message name
+      --proto-dir=PROTO-DIR ...  /path_to_sample_proto
+      --file=FILE                Proto file name (sample.proto)
+      --message=MESSAGE          Proto message name (sample_package.SampleMessage)
       --from-beginning           Read from beginning
       --pretty                   Intent output
       --with-separator           Adds separator between messages. Useful with --pretty
