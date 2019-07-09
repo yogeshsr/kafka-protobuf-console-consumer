@@ -39,3 +39,6 @@ GO111MODULE=on go build -o ./kafka-protobuf-console-consumer main.go
 --proto-dir /proto-folder-path proto --file sample.proto \
 --message sample_package.SampleMessage
 ```
+
+---
+Please add a star if you like this project.
