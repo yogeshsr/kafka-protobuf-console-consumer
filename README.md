@@ -2,6 +2,8 @@
 ## About
 kafka-protobuf-console-consumer reads protobuf encoded messages from a kafka topic and prints its decoded JSON to console.
 
+This utility can be useful when you want to quickly look into the protobuf messages of a topic or dlq. It works over the proto source file and don't need you to compile it using protoc.
+
 ## Installation
 For other than OS X, please clone the repo and follow Build from source section
 
@@ -12,8 +14,12 @@ brew install kafka-protobuf-console-consumer
 ```  
 
 ## Usage
-```
-kafka-protobuf-console-consumer --help
+``` sh
+$ kafka-protobuf-console-consumer -t topic_name -b broker1:port broker2:port \
+--proto-dir /proto-folder-path proto --file sample.proto \
+--message sample_package.SampleMessage
+
+$ kafka-protobuf-console-consumer --help
 usage: kafka-protobuf-console-consumer [<flags>]
 
 Flags:
@@ -31,13 +37,10 @@ Flags:
 
 ## Build from source
 ``` sh
-cd $GOPATH/src
-git clone 
-glide install
-GO111MODULE=on go build -o ./kafka-protobuf-console-consumer main.go
-./kafka-protobuf-console-consumer -t topic_name -b broker1:port broker2:port \
---proto-dir /proto-folder-path proto --file sample.proto \
---message sample_package.SampleMessage
+$ cd $GOPATH/src
+$ git clone 
+$ glide install
+$ GO111MODULE=on go build -o ./kafka-protobuf-console-consumer main.go
 ```
 
 ---
