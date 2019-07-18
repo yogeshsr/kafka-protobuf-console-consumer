@@ -24,6 +24,8 @@ usage: kafka-protobuf-console-consumer [<flags>]
 
 Flags:
       --help                     Show context-sensitive help (also try --help-long and --help-man).
+  -v, --version                  Version
+  -d, --debug                    Enable Sarama logs
   -b, --broker-list=localhost:9092 ...
                                  List of brokers to connect
   -t, --topic=TOPIC              Topic name

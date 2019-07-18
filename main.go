@@ -7,11 +7,14 @@ import (
 	"github.com/yogeshsr/kafka-protobuf-console-consumer/consumer"
 	"github.com/yogeshsr/kafka-protobuf-console-consumer/protobuf_decoder"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"log"
 	"os"
 	"time"
 )
 
 var (
+	version                  = kingpin.Flag("version", "Version").Short('v').Bool()
+	debug                    = kingpin.Flag("debug", "Enable Sarama logs").Short('d').Bool()
 	brokerList               = kingpin.Flag("broker-list", "List of brokers to connect").Short('b').Default("localhost:9092").Strings()
 	topic                    = kingpin.Flag("topic", "Topic name").Short('t').String()
 	protoImportDirs          = kingpin.Flag("proto-dir", "foo/dir1 bar/dir2").Strings()
@@ -28,6 +31,11 @@ func main() {
 
 	kingpin.Parse()
 
+	if *version {
+		fmt.Println("Version: 0.0.2")
+		os.Exit(0)
+	}
+
 	if len(*brokerList) == 0 || len(*topic) == 0 || len(*protoImportDirs) == 0 || len(*protoFileNameWithMessage) == 0 ||
 		len(*messageName) == 0 {
 		// TODO fix --help should work when Flags are marked Required, currently its supported by making Flags optional and checking this way
@@ -37,9 +45,12 @@ func main() {
 
 	// Init config, specify appropriate version
 	config := NewConfig()
-	config.Version = V1_0_0_0
+	config.Version = V0_10_2_0
 	config.Consumer.Return.Errors = true
 	config.Consumer.Offsets.Initial = offset()
+	if *debug {
+		Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
+	}
 
 	// Start with a client
 	client, err := NewClient(*brokerList, config)
