@@ -32,7 +32,7 @@ func main() {
 	kingpin.Parse()
 
 	if *version {
-		fmt.Println("Version: 0.0.2")
+		fmt.Println("Version: 2.0.0")
 		os.Exit(0)
 	}
 
