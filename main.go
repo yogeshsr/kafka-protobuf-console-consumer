@@ -31,8 +31,9 @@ func main() {
 
 	kingpin.Parse()
 
+	versionInfo := "Version: 2.0.0"
 	if *version {
-		fmt.Println("Version: 2.0.0")
+		fmt.Println(versionInfo)
 		os.Exit(0)
 	}
 
@@ -61,7 +62,7 @@ func main() {
 
 	// Start a new consumer group
 	consumerGroup := consumerGroup()
-	fmt.Printf("Starting consumer group; %s\n\n", consumerGroup)
+	fmt.Printf("Starting %s with consumer group; %s\n\n", versionInfo, consumerGroup)
 
 	group, err := NewConsumerGroupFromClient(consumerGroup, client)
 	if err != nil {
