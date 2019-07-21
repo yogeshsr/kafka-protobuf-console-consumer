@@ -25,15 +25,18 @@ var (
 	prettyJson    = kingpin.Flag("pretty", "Format output").Bool()
 	withSeparator = kingpin.Flag("with-separator", "Adds separator between messages. Useful with --pretty").Bool()
 
+	// make will provide the version details for the release executable
+	versionInfo string
+	versionDate string
 )
 
 func main() {
 
 	kingpin.Parse()
 
-	versionInfo := "Version: 2.0.0"
+	//versionInfo := "Version: 2.0.0"
 	if *version {
-		fmt.Println(versionInfo)
+		fmt.Printf("%s - %s", versionInfo, versionDate)
 		os.Exit(0)
 	}
 
@@ -43,6 +46,9 @@ func main() {
 		fmt.Println("Missing required params; try --help")
 		os.Exit(1)
 	}
+	// Start a new consumer group
+	consumerGroup := consumerGroup()
+	fmt.Printf("Starting %s build-on %s with consumer group: %s\n\n", versionInfo, versionDate, consumerGroup)
 
 	// Init config, specify appropriate version
 	config := NewConfig()
@@ -59,10 +65,6 @@ func main() {
 		panic(err)
 	}
 	defer func() { _ = client.Close() }()
-
-	// Start a new consumer group
-	consumerGroup := consumerGroup()
-	fmt.Printf("Starting %s with consumer group; %s\n\n", versionInfo, consumerGroup)
 
 	group, err := NewConsumerGroupFromClient(consumerGroup, client)
 	if err != nil {
