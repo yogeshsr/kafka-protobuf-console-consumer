@@ -34,7 +34,6 @@ func main() {
 
 	kingpin.Parse()
 
-	//versionInfo := "Version: 2.0.0"
 	if *version {
 		fmt.Printf("%s - %s", versionInfo, versionDate)
 		os.Exit(0)
@@ -83,12 +82,15 @@ func main() {
 	ctx := context.Background()
 	for {
 		topics := []string{*topic}
-		protobufJSONStringify := protobuf_decoder.NewProtobufJSONStringify(*protoImportDirs, *protoFileNameWithMessage, *messageName)
+		protobufJSONStringify, err := protobuf_decoder.NewProtobufJSONStringify(*protoImportDirs, *protoFileNameWithMessage, *messageName)
+		if err != nil {
+			panic(err)
+		}
 
 		handler := consumer.NewSimpleConsumerGroupHandler(
 			protobufJSONStringify, *prettyJson, *fromBeginning, *withSeparator, )
 
-		err := group.Consume(ctx, topics, handler)
+		err = group.Consume(ctx, topics, handler)
 		if err != nil {
 			panic(err)
 		}

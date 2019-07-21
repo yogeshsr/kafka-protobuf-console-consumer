@@ -10,27 +10,26 @@ import (
 )
 
 type ProtobufJSONStringify struct {
-	protoImportDirs          []string
-	protoImportFiles         []string
 	protoFileNameWithMessage string
 	messageName              string
+	fds						 []*desc.FileDescriptor
 }
 
-func NewProtobufJSONStringify(protoImportDirs []string, protoFileNameWithMessage string, messageName string) *ProtobufJSONStringify {
+func NewProtobufJSONStringify(protoImportDirs []string, protoFileNameWithMessage string, messageName string) (*ProtobufJSONStringify, error) {
 	protoImportFiles := []string{fmt.Sprintf("%s/%s", protoImportDirs[0], protoFileNameWithMessage)}
-	return &ProtobufJSONStringify{protoImportDirs: protoImportDirs, protoImportFiles: protoImportFiles, protoFileNameWithMessage: protoFileNameWithMessage, messageName: messageName}
+
+	fds, err := fileDescriptorsFromProtoFiles(protoImportDirs, protoImportFiles...)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProtobufJSONStringify{fds:fds, protoFileNameWithMessage: protoFileNameWithMessage, messageName: messageName}, nil
 }
 
 func (c *ProtobufJSONStringify) JsonString(protobufMsg []byte, prettyJson bool) (string, error) {
 
-	fds, err := fileDescriptorsFromProtoFiles(c.protoImportDirs, c.protoImportFiles...)
-
-	if err != nil {
-		return "", err
-	}
-
 	var fd *desc.FileDescriptor
-	for _, value := range fds {
+	for _, value := range c.fds {
 		if value.GetName() == c.protoFileNameWithMessage {
 			fd = value
 		}
@@ -42,7 +41,7 @@ func (c *ProtobufJSONStringify) JsonString(protobufMsg []byte, prettyJson bool) 
 
 	md := fd.FindMessage(c.messageName)
 	dm := dynamic.NewMessage(md)
-	err = dm.Unmarshal(protobufMsg)
+	err := dm.Unmarshal(protobufMsg)
 	if err != nil {
 		return "", err
 	}
@@ -62,14 +61,8 @@ func (c *ProtobufJSONStringify) JsonString(protobufMsg []byte, prettyJson bool) 
 
 func (c *ProtobufJSONStringify) FieldValue(protobufMsg []byte, field string) (interface{}, error) {
 
-	fds, err := fileDescriptorsFromProtoFiles(c.protoImportDirs, c.protoImportFiles...)
-
-	if err != nil {
-		return "", err
-	}
-
 	var fd *desc.FileDescriptor
-	for _, value := range fds {
+	for _, value := range c.fds {
 		if value.GetName() == c.protoFileNameWithMessage {
 			fd = value
 		}
@@ -81,7 +74,7 @@ func (c *ProtobufJSONStringify) FieldValue(protobufMsg []byte, field string) (in
 
 	md := fd.FindMessage(c.messageName)
 	dm := dynamic.NewMessage(md)
-	err = dm.Unmarshal(protobufMsg)
+	err := dm.Unmarshal(protobufMsg)
 	if err != nil {
 		return "", err
 	}

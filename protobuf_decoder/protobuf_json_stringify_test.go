@@ -18,7 +18,7 @@ func TestJSONStringifyShouldCreateJSONString(t *testing.T) {
 		IntegerField: 99,
 	}
 
-	stringify := NewProtobufJSONStringify(protoImportDirs, protoFileNameWithMessage, messageName)
+	stringify, _ := NewProtobufJSONStringify(protoImportDirs, protoFileNameWithMessage, messageName)
 	messageBytes, _ := proto.Marshal(&simple)
 	s, _ := stringify.JsonString(messageBytes, false)
 	fmt.Println(s)
@@ -36,7 +36,7 @@ func TestJSONStringifyShouldGetTheFieldValue(t *testing.T) {
 		IntegerField: 99,
 	}
 
-	stringify := NewProtobufJSONStringify(protoImportDirs, protoFileNameWithMessage, messageName)
+	stringify, _ := NewProtobufJSONStringify(protoImportDirs, protoFileNameWithMessage, messageName)
 	messageBytes, _ := proto.Marshal(&simple)
 	s, _ := stringify.FieldValue(messageBytes, "string_field")
 	fmt.Println(s)
