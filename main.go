@@ -16,6 +16,7 @@ var (
 	version                  = kingpin.Flag("version", "Version").Short('v').Bool()
 	debug                    = kingpin.Flag("debug", "Enable Sarama logs").Short('d').Bool()
 	brokerList               = kingpin.Flag("broker-list", "List of brokers to connect").Short('b').Default("localhost:9092").Strings()
+	consumerGroupName        = kingpin.Flag("consumer-group", "Consumer group to use").Short('c').String()
 	topic                    = kingpin.Flag("topic", "Topic name").Short('t').String()
 	protoImportDirs          = kingpin.Flag("proto-dir", "foo/dir1 bar/dir2").Strings()
 	protoFileNameWithMessage = kingpin.Flag("file", "Proto file name").String()
@@ -98,7 +99,9 @@ func main() {
 }
 
 func consumerGroup() string {
-	//TODO consumer group can also be read from cmd line
+	if len(*consumerGroupName) > 0 {
+		return *consumerGroupName
+	}
 	return fmt.Sprintf("kafka-protobuf-console-consumer-%d", time.Now().UnixNano()/1000000)
 }
 

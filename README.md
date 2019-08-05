@@ -5,7 +5,7 @@ kafka-protobuf-console-consumer reads protobuf encoded messages from a kafka top
 This utility can be useful when you want to quickly look into the protobuf messages of a topic or dlq. It works over the proto source file and don't need you to compile it using protoc.
 
 ## Installation
-Current version 2.0.1
+Current version 2.1.0
 
 For other than OS X, please clone the repo and follow Build from source section
 
@@ -30,6 +30,9 @@ Flags:
   -d, --debug                    Enable Sarama logs
   -b, --broker-list=localhost:9092 ...
                                  List of brokers to connect
+  -c, --consumer-group=CONSUMER-GROUP
+                                 Consumer group to use
+
   -t, --topic=TOPIC              Topic name
       --proto-dir=PROTO-DIR ...  /path_to_sample_proto
       --file=FILE                Proto file name (sample.proto)
