@@ -7,6 +7,9 @@ import (
 	"github.com/jhump/protoreflect/desc"
 	"github.com/jhump/protoreflect/desc/protoparse"
 	"github.com/jhump/protoreflect/dynamic"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 type ProtobufJSONStringify struct {
@@ -16,21 +19,42 @@ type ProtobufJSONStringify struct {
 }
 
 func NewProtobufJSONStringify(protoImportDirs []string, protoFileNameWithMessage string, messageName string) (*ProtobufJSONStringify, error) {
-	protoImportFiles := []string{fmt.Sprintf("%s/%s", protoImportDirs[0], protoFileNameWithMessage)}
 
-	fds, err := fileDescriptorsFromProtoFiles(protoImportDirs, protoImportFiles...)
+	// Hack to avoid cmd line arg to provide abs file path
+	err, protoFilePath := absFilePath(protoImportDirs, protoFileNameWithMessage)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ProtobufJSONStringify{fds:fds, protoFileNameWithMessage: protoFileNameWithMessage, messageName: messageName}, nil
+	fds, err := fileDescriptorsFromProtoFiles(protoImportDirs, protoFilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProtobufJSONStringify{fds: fds, protoFileNameWithMessage: protoFileNameWithMessage, messageName: messageName}, nil
+}
+
+func absFilePath(protoImportDirs []string, protoFileNameWithMessage string) (error, string) {
+	var protoFilePath string
+	var err error
+	for _, protoDir := range protoImportDirs {
+		fileWithProtoDirPath := filepath.Join(protoDir, protoFileNameWithMessage)
+		if _, err = os.Stat(fileWithProtoDirPath); err == nil {
+			protoFilePath = fileWithProtoDirPath
+			break
+		}
+	}
+	if len(protoFilePath) == 0 {
+		return errors.New(fmt.Sprintf("File: %s not found in: %v\n", protoFileNameWithMessage, protoImportDirs)), ""
+	}
+	return err, protoFilePath
 }
 
 func (c *ProtobufJSONStringify) JsonString(protobufMsg []byte, prettyJson bool) (string, error) {
 
 	var fd *desc.FileDescriptor
 	for _, value := range c.fds {
-		if value.GetName() == c.protoFileNameWithMessage {
+		if strings.HasSuffix(c.protoFileNameWithMessage, value.GetName()) {
 			fd = value
 		}
 	}

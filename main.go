@@ -18,8 +18,8 @@ var (
 	brokerList               = kingpin.Flag("broker-list", "List of brokers to connect").Short('b').Default("localhost:9092").Strings()
 	consumerGroupName        = kingpin.Flag("consumer-group", "Consumer group to use").Short('c').String()
 	topic                    = kingpin.Flag("topic", "Topic name").Short('t').String()
-	protoImportDirs          = kingpin.Flag("proto-dir", "foo/dir1 bar/dir2").Strings()
-	protoFileNameWithMessage = kingpin.Flag("file", "Proto file name").String()
+	protoImportDirs          = kingpin.Flag("proto-dir", "/foo/dir1 /bar/dir2 (add all dirs used by imports)").Strings()
+	protoFileNameWithMessage = kingpin.Flag("file", "will be baz/a.proto that's in /foo/dir1/baz/a.proto").String()
 	messageName              = kingpin.Flag("message", "Proto message name").String()
 
 	fromBeginning 			 = kingpin.Flag("from-beginning", "Read from beginning").Bool()
@@ -32,7 +32,6 @@ var (
 )
 
 func main() {
-
 	kingpin.Parse()
 
 	if *version {
@@ -40,7 +39,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if len(*brokerList) == 0 || len(*topic) == 0 || len(*protoImportDirs) == 0 || len(*protoFileNameWithMessage) == 0 ||
+	if len(*brokerList) == 0 || len(*topic) == 0 || len(*protoFileNameWithMessage) == 0 ||
 		len(*messageName) == 0 {
 		// TODO fix --help should work when Flags are marked Required, currently its supported by making Flags optional and checking this way
 		fmt.Println("Missing required params; try --help")

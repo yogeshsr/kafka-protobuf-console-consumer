@@ -25,20 +25,18 @@ $ kafka-protobuf-console-consumer --help
 usage: kafka-protobuf-console-consumer [<flags>]
 
 Flags:
-      --help                     Show context-sensitive help (also try --help-long and --help-man).
   -v, --version                  Version
   -d, --debug                    Enable Sarama logs
   -b, --broker-list=localhost:9092 ...
                                  List of brokers to connect
   -c, --consumer-group=CONSUMER-GROUP
                                  Consumer group to use
-
   -t, --topic=TOPIC              Topic name
-      --proto-dir=PROTO-DIR ...  /path_to_sample_proto
-      --file=FILE                Proto file name (sample.proto)
-      --message=MESSAGE          Proto message name (sample_package.SampleMessage)
+      --proto-dir=PROTO-DIR ...  /foo/dir1 /bar/dir2 (add all dirs used by imports)
+      --file=FILE                will be baz/a.proto that's in /foo/dir1/baz/a.proto
+      --message=MESSAGE          Proto message name
       --from-beginning           Read from beginning
-      --pretty                   Intent output
+      --pretty                   Format output
       --with-separator           Adds separator between messages. Useful with --pretty
 ```
 
