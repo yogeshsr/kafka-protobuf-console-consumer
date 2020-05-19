@@ -47,8 +47,9 @@ Flags:
 
 ## Build from source
 ``` sh
-$ cd $GOPATH/src
+$ cd $GOPATH/src/github.com/yogeshsr/
 $ git clone https://github.com/yogeshsr/kafka-protobuf-console-consumer.git
+$ cd kafka-protobuf-console-consumer
 $ glide install
 $ GO111MODULE=on go build -o ./kafka-protobuf-console-consumer main.go
 ```
